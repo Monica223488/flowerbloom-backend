@@ -5,14 +5,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
 @Service
-public class PlantService {
+public class TrefleService {
 
     @Value("${trefle.api.key}")
     private String trefleApiKey;
 
     private final RestClient restClient;
 
-    public PlantService() {
+    public TrefleService() {
         this.restClient = RestClient.builder()
                 .baseUrl("https://trefle.io/api/v1")
                 .build();
