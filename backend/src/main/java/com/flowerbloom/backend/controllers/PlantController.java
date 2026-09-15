@@ -4,6 +4,8 @@ import com.flowerbloom.backend.services.TrefleService;
 import com.flowerbloom.backend.services.INaturalistService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/api/plants")
@@ -28,5 +30,10 @@ public class PlantController {
     @GetMapping("/taxon")
     public Integer getTaxonId(@RequestParam String scientificName) {
         return iNaturalistService.getTaxonId(scientificName);
+    }
+
+    @GetMapping("/histogram")
+    public Map<Integer, Integer> getFloweringHistogram(@RequestParam Integer taxonId) {
+        return iNaturalistService.getFloweringHistogram(taxonId);
     }
 }

@@ -3,6 +3,8 @@ package com.flowerbloom.backend.services;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -36,5 +38,32 @@ public class INaturalistService {
             }
         }
         return null;
+    }
+
+    public Map<Integer, Integer> getFloweringHistogram(Integer taxonId) {
+        Map response = restClient.get()
+                .uri(uriBuilder -> uriBuilder
+                        .path("/observations/histogram")
+                        .queryParam("taxon_id", taxonId)
+                        .queryParam("term_id", 12)
+                        .queryParam("term_value_id", 13)
+                        .queryParam("place_id", 7506)
+                        .build())
+                .retrieve()
+                .body(Map.class);
+
+        Map<String, Object> results =
+                (Map<String, Object>) response.get("results");
+        Map<String, Integer> monthOfYear =
+                (Map<String, Integer>) results.get("month_of_year");
+        Map<Integer, Integer> floweringHistogram = new LinkedHashMap<>();
+        for (Map.Entry<String, Integer> entry : monthOfYear.entrySet()) {
+            floweringHistogram.put(
+                    Integer.parseInt(entry.getKey()),
+                    entry.getValue()
+            );
+        }
+
+        return floweringHistogram;
     }
 }
